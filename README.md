@@ -151,6 +151,10 @@ prisma/
 
 ## Despliegue en Render
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://dashboard.render.com/blueprint/new?repo=https://github.com/willymoa/polla_mundialista)
+
+O abre directamente: [Crear Blueprint en Render](https://dashboard.render.com/blueprint/new?repo=https://github.com/willymoa/polla_mundialista)
+
 El repositorio incluye [`render.yaml`](render.yaml) (Blueprint) con:
 
 - Una base de datos **PostgreSQL** gestionada por Render.
@@ -158,11 +162,11 @@ El repositorio incluye [`render.yaml`](render.yaml) (Blueprint) con:
 
 Pasos:
 
-1. En Render, crea un nuevo **Blueprint** apuntando a este repositorio (Render detectará `render.yaml`).
-2. Define `NEXTAUTH_URL` con la URL pública asignada al servicio (p. ej. `https://polla-mundialista-pro.onrender.com`).
-3. El **build command** ejecuta `pnpm install && pnpm prisma generate && pnpm prisma migrate deploy && pnpm build` (usa `migrate deploy`, no `migrate dev`, en producción).
-4. El **start command** es `pnpm start`, que ejecuta `next start -p $PORT` (Render inyecta `$PORT`).
-5. Tras el primer deploy, ejecuta el seed **una sola vez** de forma manual (Shell de Render):
+1. Haz clic en **Deploy to Render** (arriba) o ve a [dashboard.render.com/blueprint/new](https://dashboard.render.com/blueprint/new?repo=https://github.com/willymoa/polla_mundialista).
+2. Inicia sesión en Render y autoriza acceso a GitHub si te lo pide.
+3. Revisa el Blueprint (PostgreSQL + Web Service) y haz clic en **Apply**.
+4. Cuando Render asigne la URL pública (p. ej. `https://polla-mundialista-pro.onrender.com`), configura la variable **`NEXTAUTH_URL`** con esa URL exacta en el panel del servicio.
+5. Tras el primer deploy exitoso, ejecuta el seed **una sola vez** en el Shell de Render:
 
    ```bash
    pnpm seed:prod
