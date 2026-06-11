@@ -91,18 +91,31 @@ pnpm lint
 pnpm build
 ```
 
-## Usuarios de prueba (seed)
+## Usuarios de prueba
+
+### Local (`pnpm exec prisma db seed`)
+
+Carga datos demo completos (miembros, pollas, partidos, pronósticos):
 
 | Rol | Email | Contraseña |
 | --- | --- | --- |
-| Super admin de la plataforma | `superadmin@polla.com` | `SuperAdmin123456` |
-| Dueño de la organización "Universidad Icesi" | `owner@empresa.com` | `Owner123456` |
-| Participante | `ana@polla.com` | `Participante123456` |
-| Participante | `juan@polla.com` | `Participante123456` |
-| Participante | `maria@polla.com` | `Participante123456` |
-| Participante | `pedro@polla.com` | `Participante123456` |
+| Super admin | `superadmin@polla.com` | `SuperAdmin123456` |
+| Owner | `owner@empresa.com` | `Owner123456` |
+| Participantes | `ana@polla.com`, `juan@polla.com`, etc. | `Participante123456` |
 
-La organización demo `universidad-icesi` tiene una polla `mundial-2026-demo` con equipos, un partido finalizado (con pronósticos y puntos ya calculados) y partidos pendientes para probar pronósticos y bloqueo.
+### Producción / Render (`pnpm seed:prod`)
+
+Solo crea **planes**, **super admin**, **owner** y una organización vacía. Sin miembros demo ni pollas de ejemplo.
+
+| Rol | Email | Contraseña |
+| --- | --- | --- |
+| Super admin | `superadmin@polla.com` | `SuperAdmin123456` |
+| Owner | `owner@empresa.com` | `Owner123456` |
+
+Organización por defecto: **Mundialistas** (`/org/mundialistas`). Personalizable con variables de entorno al ejecutar el seed:
+
+- `SEED_ORG_NOMBRE`, `SEED_ORG_SLUG`
+- `SEED_OWNER_EMAIL`, `SEED_OWNER_NOMBRE`, `SEED_OWNER_PASSWORD`
 
 ## Estructura del proyecto
 
@@ -139,7 +152,8 @@ lib/
   scoring.ts                       Motor de puntuación y recálculo de ranking
 prisma/
   schema.prisma                    Esquema de datos
-  seed.ts                          Datos de ejemplo
+  seed.ts                          Datos demo (local)
+  seed-prod.ts                     Seed mínimo para producción
 ```
 
 ## Seguridad multitenant

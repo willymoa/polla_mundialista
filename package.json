@@ -9,7 +9,7 @@
     "start": "next start -p $PORT",
     "lint": "eslint",
     "test": "vitest run",
-    "seed:prod": "pnpm exec tsx prisma/seed.ts",
+    "seed:prod": "pnpm exec tsx prisma/seed-prod.ts",
     "cleanup:members": "tsx prisma/cleanup-members.ts"
   },
   "dependencies": {
