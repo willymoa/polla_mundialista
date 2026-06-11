@@ -1,0 +1,297 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ──────────────────────────────────────────────────────────
+// ENUMS
+// ──────────────────────────────────────────────────────────
+
+enum GlobalRole {
+  USER
+  SUPER_ADMIN
+}
+
+enum OrgRole {
+  OWNER
+  ADMIN
+  MIEMBRO
+}
+
+enum PollaRole {
+  ADMIN_POLLA
+  PARTICIPANTE
+  ESPECTADOR
+}
+
+enum EstadoMembresia {
+  ACTIVO
+  INVITADO
+  SUSPENDIDO
+}
+
+enum EstadoPolla {
+  BORRADOR
+  ACTIVA
+  FINALIZADA
+  ARCHIVADA
+  OCULTA
+  INACTIVA
+}
+
+enum EstadoPartido {
+  PENDIENTE
+  CERRADO
+  FINALIZADO
+}
+
+enum TipoAcierto {
+  EXACTO
+  DIFERENCIA
+  RESULTADO
+  NINGUNO
+}
+
+enum LockMode {
+  PER_MATCH
+  GLOBAL_DEADLINE
+}
+
+enum PlanTipo {
+  GRATIS
+  BASICO
+  PRO
+  EMPRESA
+}
+
+enum EstadoInvitacion {
+  PENDIENTE
+  ACEPTADA
+  EXPIRADA
+  REVOCADA
+}
+
+// ──────────────────────────────────────────────────────────
+// MODELOS
+// ──────────────────────────────────────────────────────────
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  nombre       String
+  globalRole   GlobalRole @default(USER)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  membresias      Membresia[]
+  participaciones ParticipantePolla[]
+  pronosticos     Pronostico[]
+
+  @@map("users")
+}
+
+model Organizacion {
+  id         String          @id @default(cuid())
+  nombre     String
+  slug       String          @unique
+  logoUrl    String?
+  plan       PlanTipo        @default(GRATIS)
+  planId     String?
+  estado     EstadoMembresia @default(ACTIVO)
+  brandColor String?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  membresias   Membresia[]
+  invitaciones Invitacion[]
+  pollas       Polla[]
+  planRef      Plan?        @relation(fields: [planId], references: [id])
+
+  @@map("organizaciones")
+}
+
+model Membresia {
+  id             String          @id @default(cuid())
+  userId         String
+  organizacionId String
+  role           OrgRole
+  estado         EstadoMembresia @default(ACTIVO)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizacion Organizacion @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizacionId])
+  @@index([organizacionId])
+  @@index([userId])
+  @@map("membresias")
+}
+
+model Invitacion {
+  id              String           @id @default(cuid())
+  organizacionId  String
+  codigo          String           @unique
+  emailInvitado   String?
+  roleAsignado    OrgRole
+  estado          EstadoInvitacion @default(PENDIENTE)
+  fechaExpiracion DateTime
+  createdAt       DateTime         @default(now())
+
+  organizacion Organizacion @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+
+  @@index([organizacionId])
+  @@map("invitaciones")
+}
+
+model Polla {
+  id               String      @id @default(cuid())
+  organizacionId   String
+  nombre           String
+  slug             String
+  descripcion      String?
+  torneo           String?
+  estado           EstadoPolla @default(BORRADOR)
+  fechaInicio      DateTime?
+  fechaFin         DateTime?
+  codigoInvitacion String?
+  esPublica        Boolean     @default(false)
+  lockMode         LockMode    @default(PER_MATCH)
+  deadlineGlobal   DateTime?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  organizacion    Organizacion        @relation(fields: [organizacionId], references: [id], onDelete: Cascade)
+  participantes   ParticipantePolla[]
+  equipos         Equipo[]
+  partidos        Partido[]
+  pronosticos     Pronostico[]
+  reglaPuntuacion ReglaPuntuacion?
+
+  @@unique([organizacionId, slug])
+  @@index([organizacionId])
+  @@map("pollas")
+}
+
+model ParticipantePolla {
+  id                String          @id @default(cuid())
+  userId            String
+  pollaId           String
+  role              PollaRole       @default(PARTICIPANTE)
+  estado            EstadoMembresia @default(ACTIVO)
+  pago              Boolean         @default(false)
+  puntosTotales     Int             @default(0)
+  marcadoresExactos Int             @default(0)
+  aciertosResultado Int             @default(0)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  polla Polla @relation(fields: [pollaId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pollaId])
+  @@index([pollaId])
+  @@index([userId])
+  @@map("participantes_polla")
+}
+
+model Equipo {
+  id         String   @id @default(cuid())
+  pollaId    String
+  nombre     String
+  grupo      String?
+  banderaUrl String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  polla             Polla     @relation(fields: [pollaId], references: [id], onDelete: Cascade)
+  partidosLocal     Partido[] @relation("EquipoLocal")
+  partidosVisitante Partido[] @relation("EquipoVisitante")
+
+  @@index([pollaId])
+  @@map("equipos")
+}
+
+model Partido {
+  id                 String        @id @default(cuid())
+  pollaId            String
+  equipoLocalId      String
+  equipoVisitanteId  String
+  fechaHora          DateTime
+  fase               String?
+  estado             EstadoPartido @default(PENDIENTE)
+  golesLocalReal     Int?
+  golesVisitanteReal Int?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  polla           Polla        @relation(fields: [pollaId], references: [id], onDelete: Cascade)
+  equipoLocal     Equipo       @relation("EquipoLocal", fields: [equipoLocalId], references: [id])
+  equipoVisitante Equipo       @relation("EquipoVisitante", fields: [equipoVisitanteId], references: [id])
+  pronosticos     Pronostico[]
+
+  @@index([pollaId])
+  @@map("partidos")
+}
+
+model Pronostico {
+  id             String      @id @default(cuid())
+  userId         String
+  pollaId        String
+  partidoId      String
+  golesLocal     Int
+  golesVisitante Int
+  puntos         Int         @default(0)
+  tipoAcierto    TipoAcierto @default(NINGUNO)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  polla   Polla   @relation(fields: [pollaId], references: [id], onDelete: Cascade)
+  partido Partido @relation(fields: [partidoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, partidoId])
+  @@index([pollaId])
+  @@index([partidoId])
+  @@index([userId])
+  @@map("pronosticos")
+}
+
+model ReglaPuntuacion {
+  id                       String   @id @default(cuid())
+  pollaId                  String   @unique
+  puntosMarcadorExacto     Int      @default(5)
+  puntosResultado          Int      @default(3)
+  puntosBonusDiferencia    Int      @default(1)
+  puntosCampeon            Int?     @default(20)
+  puntosFinalista          Int?     @default(10)
+  puntosGoleador           Int?
+  permiteEditarHastaInicio Boolean  @default(true)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  polla Polla @relation(fields: [pollaId], references: [id], onDelete: Cascade)
+
+  @@map("reglas_puntuacion")
+}
+
+model Plan {
+  id                       String   @id @default(cuid())
+  nombre                   String
+  maxPollas                Int
+  maxParticipantesPorPolla Int
+  permiteLogo              Boolean  @default(false)
+  permiteExportarExcel     Boolean  @default(false)
+  permiteMultiplesAdmins   Boolean  @default(false)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  organizaciones Organizacion[]
+
+  @@map("planes")
+}
