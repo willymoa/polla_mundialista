@@ -104,8 +104,8 @@ async function main() {
   console.log("Creando organización...");
   const org = await prisma.organizacion.create({
     data: {
-      nombre: "Universidad Icesi",
-      slug: "universidad-icesi",
+      nombre: "Mundialistas",
+      slug: "mundialistas",
       plan: "GRATIS",
       planId: planGratis.id,
       brandColor: "#1a3a5c",
