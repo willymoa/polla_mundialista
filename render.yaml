@@ -9,7 +9,7 @@ services:
     runtime: node
     plan: free
     branch: master
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm prisma generate && pnpm prisma migrate deploy && pnpm build
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm prisma generate && pnpm prisma migrate deploy && pnpm build
     startCommand: pnpm start
     healthCheckPath: /
     envVars:
