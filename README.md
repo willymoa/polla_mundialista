@@ -155,24 +155,22 @@ prisma/
 
 O abre directamente: [Crear Blueprint en Render](https://dashboard.render.com/blueprint/new?repo=https://github.com/willymoa/polla_mundialista)
 
-El repositorio incluye [`render.yaml`](render.yaml) (Blueprint) con:
-
-- Una base de datos **PostgreSQL** gestionada por Render.
-- Un **Web Service** Node conectado al repositorio, con `DATABASE_URL` enlazada automáticamente a la base de datos y `NEXTAUTH_SECRET` generado como variable secreta.
+El repositorio incluye [`render.yaml`](render.yaml) (Blueprint) con un **Web Service** Node. En el plan free de Render solo puedes tener **una** base de datos PostgreSQL por cuenta; por eso `render.yaml` no crea una BD nueva. Debes enlazar una existente.
 
 Pasos:
 
-1. Haz clic en **Deploy to Render** (arriba) o ve a [dashboard.render.com/blueprint/new](https://dashboard.render.com/blueprint/new?repo=https://github.com/willymoa/polla_mundialista).
-2. Inicia sesión en Render y autoriza acceso a GitHub si te lo pide.
-3. Revisa el Blueprint (PostgreSQL + Web Service) y haz clic en **Apply**.
-4. Cuando Render asigne la URL pública (p. ej. `https://polla-mundialista-pro.onrender.com`), configura la variable **`NEXTAUTH_URL`** con esa URL exacta en el panel del servicio.
-5. Tras el primer deploy exitoso, ejecuta el seed **una sola vez** en el Shell de Render:
+1. En [Render Dashboard](https://dashboard.render.com) abre tu **PostgreSQL** existente (o crea una si aún no tienes ninguna).
+2. Copia la **Internal Database URL** (pestaña *Connect* / *Info*).
+3. Ve a tu Blueprint `polla_mundialista` → **Manual sync** (o abre de nuevo [Crear Blueprint](https://dashboard.render.com/blueprint/new?repo=https://github.com/willymoa/polla_mundialista)) y haz clic en **Apply**.
+4. Cuando pida variables de entorno, pega la URL en **`DATABASE_URL`**.
+5. Cuando Render asigne la URL pública (p. ej. `https://polla-mundialista-pro.onrender.com`), configura **`NEXTAUTH_URL`** con esa URL exacta.
+6. Tras el primer deploy exitoso, abre el **Shell** del servicio y ejecuta **una sola vez**:
 
    ```bash
-   pnpm seed:prod
+   pnpm install && pnpm seed:prod
    ```
 
-6. `next.config.ts` tiene `output: "standalone"` para una imagen de despliegue más liviana.
+Si tu cuenta no tiene ninguna BD free y quieres que el Blueprint cree PostgreSQL automáticamente, usa [`render.with-database.yaml`](render.with-database.yaml) como `render.yaml` (o indica esa ruta al crear el Blueprint).
 
 > **Nota:** el plan free de Render duerme el servicio tras periodos de inactividad. La primera petición tras "despertar" puede tardar varios segundos.
 

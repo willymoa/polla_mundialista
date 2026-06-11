@@ -1,7 +1,11 @@
-# Nota: el plan free de Render permite solo 1 base de datos PostgreSQL por cuenta.
-# Si ya tienes una, NO declares "databases" aquí. Copia la Internal Database URL
-# de tu Postgres existente en Render y configúrala como DATABASE_URL al desplegar.
-# Si necesitas crear BD nueva, usa render.with-database.yaml (y elimina tu otra BD free).
+# Usar solo si tu cuenta Render NO tiene otra base de datos free activa.
+# Renombra a render.yaml o crea el Blueprint apuntando a este archivo.
+
+databases:
+  - name: polla-mundialista-db
+    plan: free
+    databaseName: polla_mundialista_saas
+    user: polla_mundialista
 
 services:
   - type: web
@@ -16,7 +20,9 @@ services:
       - key: NODE_VERSION
         value: "20"
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: polla-mundialista-db
+          property: connectionString
       - key: NEXTAUTH_SECRET
         generateValue: true
       - key: NEXTAUTH_URL
