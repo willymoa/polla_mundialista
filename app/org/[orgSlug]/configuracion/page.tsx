@@ -10,7 +10,7 @@ export default async function ConfiguracionOrgPage({
   const { organizacion } = await requireOrgRole(orgSlug, ["OWNER"]);
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-6 py-10">
+    <main className="page-main">
       <h1 className="text-2xl font-bold text-brand-primary">
         Configuración de {organizacion.nombre}
       </h1>

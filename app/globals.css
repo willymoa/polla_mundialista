@@ -10,4 +10,27 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  overflow-x: clip;
+}
+
+@layer components {
+  .page-main {
+    @apply flex flex-1 flex-col gap-4 px-4 py-6 sm:gap-6 sm:px-6 sm:py-10;
+  }
+
+  .page-header {
+    @apply flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+  }
+
+  .page-title {
+    @apply text-xl font-bold text-brand-primary sm:text-2xl;
+  }
+
+  .card {
+    @apply rounded-xl bg-white p-4 shadow-sm sm:p-6;
+  }
+
+  .table-responsive {
+    @apply w-full min-w-[36rem] text-left text-sm;
+  }
 }

@@ -10,6 +10,7 @@ import {
   editarEquipoAction,
   eliminarEquipoAction,
 } from "@/app/org/[orgSlug]/pollas/[pollaSlug]/equipos/actions";
+import { TableScroll } from "@/components/TableScroll";
 
 export type EquipoRow = {
   id: string;
@@ -36,7 +37,8 @@ export function EquiposManager({
       {equipos.length === 0 ? (
         <p className="text-sm text-brand-primary/70">Aún no hay equipos registrados.</p>
       ) : (
-        <table className="w-full text-left text-sm">
+        <TableScroll>
+        <table className="table-responsive">
           <thead>
             <tr className="border-b border-gray-200 text-brand-primary/70">
               <th className="py-2">Nombre</th>
@@ -57,6 +59,7 @@ export function EquiposManager({
             ))}
           </tbody>
         </table>
+        </TableScroll>
       )}
     </div>
   );

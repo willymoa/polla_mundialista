@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { TableScroll } from "@/components/TableScroll";
 
 export default async function AdminPlatformPage() {
   const [totalOrganizaciones, totalUsuarios, totalPollas, planes] = await Promise.all([
@@ -12,7 +13,7 @@ export default async function AdminPlatformPage() {
   ]);
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-6 py-10">
+    <main className="page-main">
       <h1 className="text-2xl font-bold text-brand-primary">Resumen de la plataforma</h1>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -30,9 +31,10 @@ export default async function AdminPlatformPage() {
         </div>
       </div>
 
-      <div className="rounded-xl bg-white p-6 shadow-sm">
+      <div className="card">
         <h2 className="mb-4 text-lg font-semibold text-brand-primary">Organizaciones por plan</h2>
-        <table className="w-full text-left text-sm">
+        <TableScroll>
+        <table className="table-responsive">
           <thead>
             <tr className="border-b border-gray-200 text-brand-primary/70">
               <th className="py-2">Plan</th>
@@ -52,6 +54,7 @@ export default async function AdminPlatformPage() {
             ))}
           </tbody>
         </table>
+        </TableScroll>
       </div>
     </main>
   );

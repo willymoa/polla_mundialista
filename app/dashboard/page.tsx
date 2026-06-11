@@ -38,12 +38,12 @@ export default async function DashboardPage() {
   }));
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-6 py-10">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-brand-primary">
+    <main className="page-main">
+      <div className="page-header">
+        <h1 className="page-title">
           Hola, {user.name}
         </h1>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link
             href="/dashboard/cuenta"
             className="rounded-lg border border-brand-primary px-4 py-2 text-sm font-semibold text-brand-primary transition hover:bg-brand-primary hover:text-white"
@@ -75,7 +75,7 @@ export default async function DashboardPage() {
       </div>
 
       {membresias.length === 0 ? (
-        <div className="rounded-xl bg-white p-6 shadow-sm">
+        <div className="card">
           <p className="text-brand-primary/70">
             Aún no perteneces a ninguna organización.
           </p>
@@ -86,7 +86,7 @@ export default async function DashboardPage() {
             <Link
               key={m.id}
               href={`/org/${m.organizacion.slug}`}
-              className="rounded-xl bg-white p-6 shadow-sm transition hover:shadow-md"
+              className="card transition hover:shadow-md"
             >
               <h2 className="text-lg font-semibold text-brand-primary">
                 {m.organizacion.nombre}
@@ -100,14 +100,14 @@ export default async function DashboardPage() {
       )}
 
       {participacionesVisibles.length > 0 && (
-        <div className="rounded-xl bg-white p-6 shadow-sm">
+        <div className="card">
           <h2 className="mb-4 text-lg font-semibold text-brand-primary">
             Tus puntos por polla
           </h2>
           <SimpleBarChart data={datosGrafica} valueLabel="Puntos" />
           <ul className="mt-4 flex flex-col gap-2">
             {participacionesVisibles.map((p) => (
-              <li key={p.id} className="flex items-center justify-between text-sm">
+              <li key={p.id} className="flex flex-col gap-1 text-sm sm:flex-row sm:items-center sm:justify-between">
                 <Link
                   href={`/org/${p.polla.organizacion.slug}/pollas/${p.polla.slug}`}
                   className="text-brand-primary hover:underline"

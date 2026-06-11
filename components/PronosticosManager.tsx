@@ -125,7 +125,7 @@ function PronosticoFila({
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mt-3 flex flex-wrap items-center gap-3"
+        className="mt-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end"
       >
         <div className="flex flex-col gap-1">
           <label className="text-sm font-medium text-brand-primary">
@@ -157,7 +157,7 @@ function PronosticoFila({
           <button
             type="submit"
             disabled={isPending}
-            className="rounded-lg bg-brand-accent px-4 py-2 font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
+            className="w-full rounded-lg bg-brand-accent px-4 py-2 font-semibold text-white transition hover:opacity-90 disabled:opacity-60 sm:w-auto"
           >
             {isPending ? "Guardando..." : "Guardar pronóstico"}
           </button>

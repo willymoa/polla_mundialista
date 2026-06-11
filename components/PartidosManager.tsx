@@ -11,6 +11,7 @@ import {
   editarPartidoAction,
   eliminarPartidoAction,
 } from "@/app/org/[orgSlug]/pollas/[pollaSlug]/partidos/actions";
+import { TableScroll } from "@/components/TableScroll";
 
 const ESTADO_LABEL: Record<EstadoPartido, string> = {
   PENDIENTE: "Pendiente",
@@ -67,7 +68,8 @@ export function PartidosManager({
       {partidos.length === 0 ? (
         <p className="text-sm text-brand-primary/70">Aún no hay partidos registrados.</p>
       ) : (
-        <table className="w-full text-left text-sm">
+        <TableScroll>
+        <table className="table-responsive">
           <thead>
             <tr className="border-b border-gray-200 text-brand-primary/70">
               <th className="py-2">Partido</th>
@@ -91,6 +93,7 @@ export function PartidosManager({
             ))}
           </tbody>
         </table>
+        </TableScroll>
       )}
     </div>
   );

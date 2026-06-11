@@ -7,6 +7,7 @@ import {
   actualizarParticipanteAction,
   eliminarParticipanteAction,
 } from "@/app/org/[orgSlug]/pollas/[pollaSlug]/configuracion/actions";
+import { TableScroll } from "@/components/TableScroll";
 
 type EstadoParticipante = "ACTIVO" | "SUSPENDIDO";
 
@@ -62,7 +63,8 @@ export function ParticipantesPollaTable({
   };
 
   return (
-    <table className="w-full text-left text-sm">
+    <TableScroll>
+    <table className="table-responsive">
       <thead>
         <tr className="border-b border-gray-200 text-brand-primary/70">
           <th className="py-2">Nombre</th>
@@ -126,5 +128,6 @@ export function ParticipantesPollaTable({
         ))}
       </tbody>
     </table>
+    </TableScroll>
   );
 }

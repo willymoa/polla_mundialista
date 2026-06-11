@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { requirePollaAccess } from "@/lib/permissions";
+import { TableScroll } from "@/components/TableScroll";
 
 export default async function RankingPage({
   params,
@@ -21,7 +22,7 @@ export default async function RankingPage({
   });
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-6 py-10">
+    <main className="page-main">
       <h1 className="text-2xl font-bold text-brand-primary">Ranking · {polla.nombre}</h1>
       <p className="text-sm text-brand-primary/70">
         En caso de empate en puntos, se desempata por marcadores exactos, luego por aciertos de
@@ -31,8 +32,9 @@ export default async function RankingPage({
       {participantes.length === 0 ? (
         <p className="text-sm text-brand-primary/70">Aún no hay participantes en esta polla.</p>
       ) : (
-        <div className="rounded-xl bg-white p-6 shadow-sm">
-          <table className="w-full text-left text-sm">
+        <div className="card">
+          <TableScroll>
+          <table className="table-responsive">
             <thead>
               <tr className="border-b border-gray-200 text-brand-primary/70">
                 <th className="py-2">#</th>
@@ -54,6 +56,7 @@ export default async function RankingPage({
               ))}
             </tbody>
           </table>
+          </TableScroll>
         </div>
       )}
     </main>

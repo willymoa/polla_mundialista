@@ -20,7 +20,7 @@ export default async function ResultadosPage({
   });
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-6 py-10">
+    <main className="page-main">
       <h1 className="text-2xl font-bold text-brand-primary">Resultados de {polla.nombre}</h1>
       <p className="text-sm text-brand-primary/70">
         Al marcar un partido como finalizado con su marcador, los puntos de los participantes se

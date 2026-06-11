@@ -43,7 +43,7 @@ export default async function PollaDetailPage({
   }));
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-6 py-10">
+    <main className="page-main">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-brand-primary">{polla.nombre}</h1>

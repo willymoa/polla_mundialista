@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { PlanSelect } from "@/components/PlanSelect";
+import { TableScroll } from "@/components/TableScroll";
 
 export default async function AdminOrganizacionesPage() {
   const [organizaciones, planes] = await Promise.all([
@@ -14,11 +15,12 @@ export default async function AdminOrganizacionesPage() {
   ]);
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-6 py-10">
+    <main className="page-main">
       <h1 className="text-2xl font-bold text-brand-primary">Organizaciones</h1>
 
-      <div className="rounded-xl bg-white p-6 shadow-sm">
-        <table className="w-full text-left text-sm">
+      <div className="card">
+        <TableScroll>
+        <table className="table-responsive">
           <thead>
             <tr className="border-b border-gray-200 text-brand-primary/70">
               <th className="py-2">Nombre</th>
@@ -46,6 +48,7 @@ export default async function AdminOrganizacionesPage() {
             ))}
           </tbody>
         </table>
+        </TableScroll>
       </div>
     </main>
   );

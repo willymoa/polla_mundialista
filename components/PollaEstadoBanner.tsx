@@ -8,7 +8,7 @@ export function PollaEstadoBanner({ estado }: { estado: EstadoPolla }) {
   const esOculta = estado === "OCULTA";
   return (
     <div
-      className={`border-b px-6 py-3 text-sm ${
+      className={`border-b px-4 py-3 text-sm sm:px-6 ${
         esOculta
           ? "border-gray-300 bg-gray-100 text-gray-800"
           : "border-amber-200 bg-amber-50 text-amber-900"

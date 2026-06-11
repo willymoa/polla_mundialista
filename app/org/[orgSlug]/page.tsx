@@ -30,7 +30,7 @@ export default async function OrgPage({
   }));
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-6 py-10">
+    <main className="page-main">
       <div>
         <h1 className="text-2xl font-bold text-brand-primary">
           {organizacion.nombre}

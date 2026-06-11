@@ -103,7 +103,7 @@ export function ResetPasswordModal({
 
             {serverError && <p className="text-sm text-red-600">{serverError}</p>}
 
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <button
                 type="submit"
                 disabled={isPending}

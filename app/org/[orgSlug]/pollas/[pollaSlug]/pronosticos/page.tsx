@@ -48,7 +48,7 @@ export default async function PronosticosPage({
     participante.estado === "ACTIVO";
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-6 py-10">
+    <main className="page-main">
       <h1 className="text-2xl font-bold text-brand-primary">
         Mis pronósticos · {polla.nombre}
       </h1>

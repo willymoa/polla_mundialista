@@ -42,8 +42,8 @@ const caracteristicas = [
 export default function Home() {
   return (
     <main className="flex flex-1 flex-col">
-      <section className="flex flex-col items-center justify-center gap-6 px-6 py-20 text-center">
-        <h1 className="text-4xl font-bold text-brand-primary sm:text-5xl">
+      <section className="flex flex-col items-center justify-center gap-6 px-4 py-12 text-center sm:px-6 sm:py-20">
+        <h1 className="text-3xl font-bold text-brand-primary sm:text-4xl md:text-5xl">
           Polla Mundialista Pro
         </h1>
         <p className="max-w-xl text-lg text-brand-primary/80">
@@ -65,7 +65,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-6 px-6 pb-20 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="grid grid-cols-1 gap-6 px-4 pb-12 sm:grid-cols-2 sm:px-6 sm:pb-20 lg:grid-cols-3">
         {caracteristicas.map(({ icon: Icon, titulo, descripcion }) => (
           <div
             key={titulo}

@@ -32,14 +32,14 @@ export default async function MiembrosPage({
   const esAdmin = membresia.role === "OWNER" || membresia.role === "ADMIN";
 
   return (
-    <main className="flex flex-1 flex-col gap-6 px-6 py-10">
-      <h1 className="text-2xl font-bold text-brand-primary">
+    <main className="page-main">
+      <h1 className="page-title">
         Miembros de {organizacion.nombre}
       </h1>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="rounded-xl bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-6 lg:col-span-2">
+          <div className="card overflow-hidden">
             <h2 className="mb-4 text-lg font-semibold text-brand-primary">
               Miembros actuales
             </h2>
@@ -52,7 +52,7 @@ export default async function MiembrosPage({
             />
           </div>
 
-          <div className="rounded-xl bg-white p-6 shadow-sm">
+          <div className="card overflow-hidden">
             <h2 className="mb-4 text-lg font-semibold text-brand-primary">
               Invitaciones
             </h2>
@@ -61,7 +61,7 @@ export default async function MiembrosPage({
         </div>
 
         <div className="flex flex-col gap-6">
-          <div className="rounded-xl bg-white p-6 shadow-sm">
+          <div className="card">
             <h2 className="mb-4 text-lg font-semibold text-brand-primary">
               Crear usuario
             </h2>
@@ -71,7 +71,7 @@ export default async function MiembrosPage({
             <CrearMiembroForm orgSlug={orgSlug} esOwner={esOwner} />
           </div>
 
-          <div className="rounded-xl bg-white p-6 shadow-sm">
+          <div className="card">
             <h2 className="mb-4 text-lg font-semibold text-brand-primary">
               Invitar con código
             </h2>
